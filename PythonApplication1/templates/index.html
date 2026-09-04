@@ -5,6 +5,10 @@
     <title>Project Name</title>
 </head>
 <body>
+    <!-- block of account in the corner -->
+    <div style='position: absolute; top:15px; right: 20px; font-weight: bold;'>
+        Account: {{ name }}
+    </div>
     <header>
         <h1>Hello, {{ name }}!</h1>
     </header>
@@ -13,7 +17,7 @@
         <selection>
             <h2>Welcome to the Home Page</h2>
                 <!-- form for sending data  -->
-            <form method="POST" action="/">
+            <form method="POST" action="">
                 <label for="username">Username:</label>
                 <input type="text" id="username" name="user_input">
                 <button type="submit">Submit</button>

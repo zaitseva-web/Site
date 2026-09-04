@@ -13,3 +13,5 @@ def home():
 def about():
     name = session.get('name', 'Guest')
     return render_template('about.html', name=name)
+if __name__ == '__main__':
+    app.run(debug=True)
