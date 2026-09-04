@@ -4,8 +4,6 @@ app.secret_key = 'your_secret_key'
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
-    name = " "
-
     if request.method == 'POST':
         session['name'] = request.form.get('user_input')
     name = session.get('name', 'Guest')
@@ -13,6 +11,5 @@ def home():
 
 @app.route('/about')
 def about():
-    return render_template('about.html')
-if __name__ == '__main__':
-    app.run(debug=True)
+    name = session.get('name', 'Guest')
+    return render_template('about.html', name=name)
