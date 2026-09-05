@@ -29,6 +29,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="templates\about.html" />
+    <Content Include="templates\contact.html" />
     <Content Include="templates\index.html" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
