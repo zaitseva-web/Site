@@ -25,9 +25,11 @@
     <Compile Include="site.py" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="static\" />
     <Folder Include="templates\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="static\style.css" />
     <Content Include="templates\about.html" />
     <Content Include="templates\contact.html" />
     <Content Include="templates\index.html" />
