@@ -33,6 +33,8 @@
     <Content Include="templates\about.html" />
     <Content Include="templates\contact.html" />
     <Content Include="templates\index.html" />
+    <Content Include="templates\login.html" />
+    <Content Include="templates\register.html" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
