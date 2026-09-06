@@ -1,8 +1,8 @@
 /* general styles */
 body {
     font-family: 'Segoe UI', Tahoma, Verdana, Geneva, sans-serif;
-    background-color: #aa1a1a;
-    color: #333;
+    background-color: #fff7d3;
+    color: #AB1509;
     max-width: 600px;
     margin: 50px auto;
     padding: 20px;
@@ -67,4 +67,29 @@ button[type='submit'] {
 }
 button[type='submit']:hover {
     background-color: #2980b9;
+}
+/*top panel of navigation*/
+nav {
+    background-color: #ffff;
+    padding: 12px 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    margin-bottom: 20px;
+    display: flex;
+    gap: 15px;
+}
+nav a {
+    color: #2c3e50;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 4px;
+    transition: background-color 0.2s, color 0.2s;
+    margin-right: 0;
+}
+
+nav a:hover {
+    background-color: #3498db;
+    color: white;
+    text-decoration: none;
 }

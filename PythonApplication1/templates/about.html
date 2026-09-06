@@ -7,6 +7,11 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+    <nav>
+        <a href="{{url_for('home') }}">Home</a>
+        <a href="{{url_for('about') }}">About</a>
+        <a href="{{url_for('contact') }}">Contact</a>
+    </nav>
     <!-- block of account in the corner -->
     <div style='position: absolute; top:15px; right: 20px; font-weight: bold;'>
         Account: {{ name }}
