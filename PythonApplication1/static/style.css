@@ -52,6 +52,7 @@ input[type='text']:focus, textarea:focus {
 textarea {
     resize: vertical;
     height: 100px;
+    width: 100%;
 }
 /*button*/
 button[type='submit'] {
@@ -77,6 +78,7 @@ nav {
     margin-bottom: 20px;
     display: flex;
     gap: 15px;
+    width:-moz-fit-content;
 }
 nav a {
     color: #2c3e50;
@@ -92,4 +94,34 @@ nav a:hover {
     background-color: #3498db;
     color: white;
     text-decoration: none;
+}
+/*Login form*/
+form {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+label {
+    font-weight: 600;
+    color: #34495e;
+    display: block;
+    margin-bottom: 8px;
+}
+input[type='text'], input[type='password'] {
+    width: 55%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/*Register form*/
+form {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
 }
