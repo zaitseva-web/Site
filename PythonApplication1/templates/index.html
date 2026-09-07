@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project Name</title>
     <!-- styles -->
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
@@ -20,13 +21,52 @@
         {% endif %}
     </nav>
     <!-- block of account in the corner -->
-    <div style='position: absolute; top:15px; right: 20px; font-weight: bold;'>
-        Account: {{ username }}
-    </div>
+    {% if username %}
+        <div style='position: absolute; top:15px; right: 20px; font-weight: bold;'>
+            Account: {{ username }}
+        </div>
+    {% endif %}
     <header>
         <h1>Hello, {{ username }}!</h1>
     </header>
 
+    <h1>My Lists</h1>
+
+    {% if username %}
+        <!--create a new group form-->
+        <div class='card'>'
+            <h3>Create New List</h3>
+            <form action="{{ url_for('create_list') }}" method="POST">
+                <label for="list_name">List Name:</label>
+                <input type="text" id="list_name" name="list_name" required placeholder="Enter list name">
+                <button type="submit">Create</button>
+            </form>
+        </div>
+
+        <h2>My Lists</h2>
+        <div class='group-container'>'
+            {% if lists %}
+                {% for list in lists %}
+                    <div class='group-card'>
+                        <h3>{{ list.name }}</h3>
+                        <!-- list of items in the group -->
+                        <ul class='item-list'>
+                            <!-- here we will display the items in the list -->
+                        </ul>
+                        <!-- form to add a new item to the list -->
+                        <form action="{{ url_for('add_item', list_id=list.id) }}" method="POST" style="margin-top: 15px;">
+                            <input type="text" name="text" required placeholder="Enter item name" style="width: 100%; margin-bottom: 10px;">
+                            <button type="submit" style='font-size: 16px; padding: 6px 12px;'>Add Item</button>
+                        </form>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>You have no lists yet. Create one above!</p>
+            {% endif %}
+        </div>
+    {% else %}
+        <p>Please <a href="{{ url_for('login') }}">log in</a> or <a href="{{ url_for('register') }}">register</a> to view your lists.</p>
+    {% endif %}
     <main>
         <selection>
             <h2>Welcome to the Home Page</h2>

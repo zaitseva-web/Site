@@ -1,14 +1,28 @@
 from flask import Flask, render_template, request, session, url_for, redirect
 from flask_sqlalchemy import SQLAlchemy
+
 app = Flask(__name__)
-app.secret_key = 'your_secret_key' # for session management, replace with a secure key in production
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+app.config['SECRET_KEY'] = 'your_secret_key' # for session management, replace with a secure key in production
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///organizer.db'
 db = SQLAlchemy(app)
 #model for storing user information
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
+    lists = db.relationship('Group', backref='user', lazy=True)
+#model for storing group information
+class Group(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    items = db.relationship('Item', backref='group', lazy=True)
+#model for items in the group
+class Item(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    text = db.Column(db.String(200), nullable=False)
+    group_id = db.Column(db.Integer, db.ForeignKey('group.id'), nullable=False)
+
 #create the database at the first run
 with app.app_context():
     db.create_all()
@@ -17,7 +31,42 @@ with app.app_context():
 def home():
     #check if user is logged in
     username = session.get('username')
-    return render_template('index.html', username=username)
+    lists = []
+    if username:
+        user = User.query.filter_by(username=username).first()
+        if user:
+            lists = Group.query.filter_by(user_id=user.id).all()
+    return render_template('index.html', username=username, lists=lists)
+
+@app.route('/create_list', methods=['POST'])
+def create_list():
+    username = session.get('username')
+    print('Debug: Username from session:', username)  # Debugging line
+    if not username:
+        return redirect(url_for('login'))
+    name = request.form.get('list_name')
+    print('Debug: List name from form:', name)  # Debugging line
+    user = User.query.filter_by(username=username).first()
+    print('Debug: User found:', user)  # Debugging line
+    if name and user:
+        new_list = Group(name=name, user_id=user.id)
+        db.session.add(new_list)
+        db.session.commit()
+        print('successfully added new list')  # Debugging line
+    else:
+        print('Failed to add new list: name or user is None')  # Debugging line
+    return redirect(url_for('home'))
+@app.route('/add_item/<int:list_id>', methods=['POST'])
+def add_item(list_id):
+    username = session.get('username')
+    if not username:
+        return redirect(url_for('login'))
+    text = request.form.get('text')
+    if text:
+        new_item = Item(text=text, group_id=list_id)
+        db.session.add(new_item)
+        db.session.commit()
+    return redirect(url_for('home'))
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():

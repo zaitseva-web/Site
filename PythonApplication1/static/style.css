@@ -125,3 +125,19 @@ form {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     margin-top: 20px;
 }
+
+@media (max-width: 600px) {
+    body {
+        margin: 20px;
+        padding: 10px;
+    }
+
+    nav {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    input[type='text'], input[type='password'], textarea {
+        width: 100%;
+    }
+}
