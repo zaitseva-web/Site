@@ -11,24 +11,28 @@
         <a href="{{url_for('home') }}">Home</a>
         <a href="{{url_for('about') }}">About</a>
         <a href="{{url_for('contact') }}">Contact</a>
+
+        {% if username %}
+            <span>Hello, {{ username }}!</span>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        {% else %}
+            <a href="{{ url_for('login') }}">Login</a>
+            <a href="{{ url_for('register') }}">Register</a>
+        {% endif %}
     </nav>
     <!-- block of account in the corner -->
     <div style='position: absolute; top:15px; right: 20px; font-weight: bold;'>
-        Account: {{ name }}
+        Account: {{ username }}
     </div>
     <header>
-        <h1>Hello, {{ name }}!</h1>
+        <h1>Hello, {{ username }}!</h1>
     </header>
 
     <main>
         <selection>
             <h2>Welcome to the Home Page</h2>
                 <!-- form for sending data  -->
-            <form method="POST" action="/">
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="user_input">
-                <button type="submit">Submit</button>
-            </form>
+            
         </selection>
 
         <nav style="margin-top: 30px;">

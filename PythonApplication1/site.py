@@ -69,13 +69,15 @@ def about():
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
     messadge_statuse = ''
+    username = session.get('username')
+    if not username:
+        return redirect(url_for('login'))
     if request.method == 'POST':
-        user_name = request.form.get('name')
         user_message = request.form.get('message')
         # Here you would typically handle the message, e.g., save it to a database or send an email
-        print(f"Received message from {user_name}: {user_message}")
+        print(f"Received message from {username}: {user_message}")
         messadge_statuse = 'Message sent successfully!'
-    return render_template('contact.html', messadge_statuse=messadge_statuse)
+    return render_template('contact.html', messadge_statuse=messadge_statuse, username=username)
 
 if __name__ == '__main__':
     app.run(debug=True)
