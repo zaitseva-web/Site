@@ -6,6 +6,7 @@
     <title>Project Name</title>
     <!-- styles -->
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src='https://unpkg.com/htmx.org@1.9.10'></script>
 </head>
 <body>
     <nav>
@@ -36,7 +37,11 @@
         <!--create a new group form-->
         <div class='card'>'
             <h3>Create New List</h3>
-            <form action="{{ url_for('create_list') }}" method="POST">
+            <form hx-post="{{ url_for('create_list') }}"
+                  hx-target='#lists-container'
+                  hx-swap='beforeend'
+                  hx-on::after-request="this.reset()"
+                  method="POST">
                 <label for="list_name">List Name:</label>
                 <input type="text" id="list_name" name="list_name" required placeholder="Enter list name">
                 <button type="submit">Create</button>
@@ -44,17 +49,24 @@
         </div>
 
         <h2>My Lists</h2>
-        <div class='group-container'>'
+        <div class='group-container' id='lists-container'>
             {% if lists %}
                 {% for list in lists %}
-                    <div class='group-card'>
+                    <div class='group-card' id='list-card-{{ list.id }}'>
                         <h3>{{ list.name }}</h3>
                         <!-- list of items in the group -->
-                        <ul class='item-list'>
+                        <ul class='item-list' id='items-{{ list.id }}'>
+                            {% for item in list.items %}
+                                <li>{{ item.text }}</li>
+                            {% endfor %}
                             <!-- here we will display the items in the list -->
                         </ul>
                         <!-- form to add a new item to the list -->
-                        <form action="{{ url_for('add_item', list_id=list.id) }}" method="POST" style="margin-top: 15px;">
+                        <form hx-post="{{ url_for('add_item', list_id=list.id) }}"
+                              hx-target="#items-{{ list.id }}" 
+                              hx-swap="innerHTML"
+                              hx-on::after-request="this.reset()"
+                              style="margin-top: 15px;">
                             <input type="text" name="text" required placeholder="Enter item name" style="width: 100%; margin-bottom: 10px;">
                             <button type="submit" style='font-size: 16px; padding: 6px 12px;'>Add Item</button>
                         </form>
@@ -65,7 +77,7 @@
             {% endif %}
         </div>
     {% else %}
-        <p>Please <a href="{{ url_for('login') }}">log in</a> or <a href="{{ url_for('register') }}">register</a> to view your lists.</p>
+        <p>Please <a href="{{url_for('login')}}">log in</a> or <a href="{{ url_for('register')}}">register</a> to view your lists.</p>
     {% endif %}
     <main>
         <selection>

@@ -53,6 +53,9 @@ def create_list():
         db.session.add(new_list)
         db.session.commit()
         print('successfully added new list')  # Debugging line
+   
+        if request.headers.get('HX-Request'):
+            return render_template('list_card.html', new_list=new_list)
     else:
         print('Failed to add new list: name or user is None')  # Debugging line
     return redirect(url_for('home'))
@@ -62,10 +65,19 @@ def add_item(list_id):
     if not username:
         return redirect(url_for('login'))
     text = request.form.get('text')
+    print('debug item:', text)  # Debugging line
+    print('debug list_id:', list_id)  # Debugging line
     if text:
         new_item = Item(text=text, group_id=list_id)
         db.session.add(new_item)
         db.session.commit()
+        print('successfully added new item')  # Debugging line
+    if request.headers.get('HX-Request'):
+        group = Group.query.get_or_404(list_id)
+        items_html = ''
+        for item in group.items:
+            items_html += f'<li>{item.text}</li>'
+        return items_html
     return redirect(url_for('home'))
 
 @app.route('/register', methods=['GET', 'POST'])

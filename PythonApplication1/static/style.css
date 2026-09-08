@@ -141,3 +141,10 @@ form {
         width: 100%;
     }
 }
+html {
+    scroll-behavior: smooth;
+    /* or use safe position */
+}
+body {
+    overflow-anchor: auto;
+}
