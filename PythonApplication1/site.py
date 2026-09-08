@@ -56,6 +56,8 @@ def create_list():
    
         if request.headers.get('HX-Request'):
             return render_template('list_card.html', new_list=new_list)
+        else:
+            return redirect(url_for('lists'))
     else:
         print('Failed to add new list: name or user is None')  # Debugging line
     return redirect(url_for('home'))
@@ -139,6 +141,24 @@ def contact():
         print(f"Received message from {username}: {user_message}")
         messadge_statuse = 'Message sent successfully!'
     return render_template('contact.html', messadge_statuse=messadge_statuse, username=username)
-
+@app.route('/lists')
+def lists():
+    username = session.get('username')
+    if not username:
+        return redirect(url_for('login'))
+    user = User.query.filter_by(username=username).first()
+    if user:
+        user_lists = Group.query.filter_by(user_id=user.id).all()
+        return render_template('lists.html', lists=user_lists, username=username)
+    return redirect(url_for('home'))
+@app.route('/inside_list')
+def inside_list():
+    username = session.get('username')
+    if not username:
+        return redirect(url_for('login'))
+    list_id = request.args.get('list_id')
+    group = Group.query.get_or_404(list_id)
+    items = group.items
+    return render_template('inside_list.html', group=group, items=items, username=username)
 if __name__ == '__main__':
     app.run(debug=True)

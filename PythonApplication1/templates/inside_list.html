@@ -2,8 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About </title>
+    <title>{{ group.name }}</title>
     <!--styles-->
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
@@ -15,28 +14,25 @@
         <a href="{{url_for('lists') }}">Lists</a>
 
         {% if username %}
-            
-            <a href="{{ url_for('logout') }}">Logout</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
         {% else %}
-            <a href="{{ url_for('login') }}">Login</a>
-            <a href="{{ url_for('register') }}">Register</a>
+        <a href="{{ url_for('login') }}">Login</a>
+        <a href="{{ url_for('register') }}">Register</a>
         {% endif %}
     </nav>
     <!-- block of account in the corner -->
     <div style='position: absolute; top:15px; right: 20px; font-weight: bold;'>
         Account: {{ username }}
     </div>
-
-    <main>
-        <h1>About this project</h1>
-        <p>i want to create something amazing!</p>
-
-        <h2>Our Mission</h2>
-        <p>To provide a platform for me studying</p>
-
-        <nav style="margin-top: 30px;">
-            <a href="/">Back to Home</a>
-        </nav>
-    </main>
+    <!-- List items will be displayed here -->
+    <ul>
+        {% for item in items %}
+            <li>{{ item.text }}</li>
+        {% endfor %}
+    </ul>
+    <form method="post" action="{{ url_for('add_item', list_id=group.id) }}">
+        <input type="text" name="text" placeholder="Enter new item" required>
+        <button type="submit">Add Item</button>
+    </form>
 </body>
 </html>

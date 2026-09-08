@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lists Page</title>
+    <!--styles-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src='https://unpkg.com/htmx.org@1.9.10'></script>
+</head>
+<body>
+    <nav>
+        <a href="{{url_for('home') }}">Home</a>
+        <a href="{{url_for('about') }}">About</a>
+        <a href="{{url_for('contact') }}">Contact</a>
+        <a href="{{url_for('lists') }}">Lists</a>
+
+        {% if username %}
+        <a href="{{ url_for('logout') }}">Logout</a>
+        {% else %}
+        <a href="{{ url_for('login') }}">Login</a>
+        <a href="{{ url_for('register') }}">Register</a>
+        {% endif %}
+    </nav>
+    <!-- block of account in the corner -->
+    <div style='position: absolute; top:15px; right: 20px; font-weight: bold;'>
+        Account: {{ username }}
+    </div>
+
+    <h1>My Lists</h1>
+    <!--for all lists-->
+    <div id="lists-container">
+        {% for list in lists %}
+            <!-- Lists will be displayed here -->
+        {% endfor %}
+    </div>
+    
+    
+    <!--for create lists-->
+    <div class='card'>
+        <h3>Create New List</h3>
+        <form hx-post="{{ url_for('create_list') }}"
+              hx-target='#lists-container'
+              hx-swap='beforeend'
+              hx-on::after-request="this.reset()">
+            <label for="list_name">List Name:</label>
+            <input type="text" id="list_name" name="list_name" required placeholder="Enter list name">
+            <button type="submit">Create</button>
+        </form>
+    </div>
+    <!--when list created-->
+
+    <!--list of created lists-->
+    {% for list in lists %}
+    <nav class='card'>
+        <a class="list-button" href="{{ url_for('inside_list', list_id=list.id) }}">
+            {{ list.name }}
+        </a>
+    </nav>
+    {% endfor %}
+ 
+   
+</body>
+</html>

@@ -33,6 +33,8 @@
     <Content Include="templates\about.html" />
     <Content Include="templates\contact.html" />
     <Content Include="templates\index.html" />
+    <Content Include="templates\inside_list.html" />
+    <Content Include="templates\lists.html" />
     <Content Include="templates\list_card.html" />
     <Content Include="templates\login.html" />
     <Content Include="templates\register.html" />
