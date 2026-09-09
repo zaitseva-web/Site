@@ -1,9 +1,5 @@
-<div class='group-card' id='list-card-{{ new_list.id }}'>
-    <h3>{{ new_list.name }}</h3>
-    <ul class="items-list" id="items-list-{{ new_list.id }}">
-    </ul>
-    <form hx-post="/add_item/{{ new_list.id }}" hx-target="#items-{{ new_list.id }}" hx-swap='innerHTML' hx-on::after-request="this.reset()" style='margin-top:15px;'>
-        <input type='text' name='text' required placeholder='Add new item' style='width: 100%; margin-bottom: 10px;'>
-        <button type='submit' style='font-size: 14px; padding: 5px 10px;'>Add Item</button>
-    </form>
-</div>
+<nav class="card">
+    <a class="list-button" href="{{ url_for('inside_list', list_id=list.id) }}">
+        {{ new_list.name }}
+    </a>
+</nav>

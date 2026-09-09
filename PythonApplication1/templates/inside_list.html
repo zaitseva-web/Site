@@ -5,6 +5,7 @@
     <title>{{ group.name }}</title>
     <!--styles-->
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src='https://unpkg.com/htmx.org@1.9.10'></script>
 </head>
 <body>
     <nav>
@@ -25,14 +26,44 @@
         Account: {{ username }}
     </div>
     <!-- List items will be displayed here -->
-    <ul>
-        {% for item in items %}
-            <li>{{ item.text }}</li>
-        {% endfor %}
-    </ul>
-    <form method="post" action="{{ url_for('add_item', list_id=group.id) }}">
-        <input type="text" name="text" placeholder="Enter new item" required>
+    
+
+    <!--add item form-->
+
+    <form onsubmit="addItem(event, {{ group.id }})">
+        <input type="text" id="item-input" name="text" required placeholder="Enter item">
         <button type="submit">Add Item</button>
     </form>
+
+    <ul id="items-text-{{ group.id }}">
+        {% for item in items %}
+        <li>{{ item.text }}</li>
+        {% endfor %}
+    </ul>
+
+    <script>
+        async function addItem(event, listId) {
+            event.preventDefault(); // Останавливаем перезагрузку страницы
+            const input = document.getElementById('item-input');
+            const text = input.value;
+
+            const response = await fetch('/add_item/' + listId, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'HX-Request': 'true' // Чтобы Python понял, что это асинхронный запрос
+                },
+                body: 'text=' + encodeURIComponent(text)
+            });
+
+            if (response.ok) {
+                const html = await response.text();
+                // Добавляем пришедший <li> в конец списка
+                document.getElementById('items-text-' + listId).insertAdjacentHTML('beforeend', html);
+                input.value = ''; // Очищаем поле ввода
+            }
+        }
+    </script>
+
 </body>
 </html>

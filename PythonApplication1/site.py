@@ -74,13 +74,9 @@ def add_item(list_id):
         db.session.add(new_item)
         db.session.commit()
         print('successfully added new item')  # Debugging line
-    if request.headers.get('HX-Request'):
-        group = Group.query.get_or_404(list_id)
-        items_html = ''
-        for item in group.items:
-            items_html += f'<li>{item.text}</li>'
-        return items_html
-    return redirect(url_for('home'))
+        if request.headers.get('HX-Request'):
+            return render_template('item_card.html', new_item=new_item)
+    return redirect(url_for('inside_list', list_id=list_id))
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
