@@ -6,6 +6,7 @@
     <!--styles-->
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <script src='https://unpkg.com/htmx.org@1.9.10'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.56.0/html5sortable.min.js"></script>
 </head>
 <body>
     <nav>
@@ -26,8 +27,6 @@
         Account: {{ username }}
     </div>
     <!-- List items will be displayed here -->
-    
-
     <!--add item form-->
 
     <form onsubmit="addItem(event, {{ group.id }})">
@@ -35,7 +34,7 @@
         <button type="submit">Add Item</button>
     </form>
 
-    <ul id="items-text-{{ group.id }}">
+    <ul class="sorteble-list" data-list-id="{{group.id}}">
         {% for item in items %}
         <li>{{ item.text }}</li>
         {% endfor %}
@@ -43,7 +42,7 @@
 
     <script>
         async function addItem(event, listId) {
-            event.preventDefault(); // Останавливаем перезагрузку страницы
+            event.preventDefault(); // stop page reload
             const input = document.getElementById('item-input');
             const text = input.value;
 
@@ -51,19 +50,22 @@
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
-                    'HX-Request': 'true' // Чтобы Python понял, что это асинхронный запрос
+                    'HX-Request': 'true' // its an htmx request
                 },
                 body: 'text=' + encodeURIComponent(text)
             });
 
             if (response.ok) {
                 const html = await response.text();
-                // Добавляем пришедший <li> в конец списка
+                // add new item to the list
                 document.getElementById('items-text-' + listId).insertAdjacentHTML('beforeend', html);
-                input.value = ''; // Очищаем поле ввода
+                input.value = ''; // reset input field
             }
+
         }
     </script>
+    
+   
 
 </body>
 </html>

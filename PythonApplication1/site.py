@@ -16,7 +16,7 @@ class Group(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    items = db.relationship('Item', backref='group', lazy=True)
+    items = db.relationship('Item', backref='group', cascade='all, delete-orphan', lazy=True)
 #model for items in the group
 class Item(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -156,5 +156,15 @@ def inside_list():
     group = Group.query.get_or_404(list_id)
     items = group.items
     return render_template('inside_list.html', group=group, items=items, username=username)
+@app.route('/delete_list/<int:list_id>', methods = ['POST'])
+def delete_list(list_id):
+    username = session.get('username')
+    if not username:
+        return redirect('username')
+    list_to_delete = Group.query.get_or_404(list_id)
+    db.session.delete(list_to_delete)
+    db.session.commit()
+    return redirect(url_for('lists'))
+
 if __name__ == '__main__':
     app.run(debug=True)
