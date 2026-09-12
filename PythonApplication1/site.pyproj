@@ -29,6 +29,8 @@
     <Folder Include="templates\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Procfile" />
+    <Content Include="static\requirements.txt" />
     <Content Include="static\style.css" />
     <Content Include="templates\about.html" />
     <Content Include="templates\contact.html" />
