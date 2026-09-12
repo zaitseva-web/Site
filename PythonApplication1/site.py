@@ -160,9 +160,18 @@ def inside_list():
 def delete_list(list_id):
     username = session.get('username')
     if not username:
-        return redirect('username')
+        return redirect('login')
     list_to_delete = Group.query.get_or_404(list_id)
     db.session.delete(list_to_delete)
+    db.session.commit()
+    return redirect(url_for('lists'))
+@app.route('/delete_item/<int:item_id>', methods = ['POST'])
+def delete_item(item_id):
+    username = session.get('username')
+    if not username:
+        return redirect('login')
+    item_to_delete = Item.query.get_or_404(item_id)
+    db.session.delete(item_to_delete)
     db.session.commit()
     return redirect(url_for('lists'))
 

@@ -26,7 +26,9 @@
     <div style='position: absolute; top:15px; right: 20px; font-weight: bold;'>
         Account: {{ username }}
     </div>
-    <!-- List items will be displayed here -->
+    <div>
+        <!-- List items will be displayed here -->
+     </div>
     <!--add item form-->
 
     <form onsubmit="addItem(event, {{ group.id }})">
@@ -64,8 +66,19 @@
 
         }
     </script>
-    
-   
+
+    <ul>
+        {%for item in items%}
+        <li>
+            {{item.name}}
+            <form action="{{ url_for('delete_item', item_id=item.id)}}" method="POST" style="margin:0;">
+                <button type="submit" class="btn-delete-small" onclick="return confirm('delete?');">Delete</button>
+            </form>
+        </li>
+        {% endfor%}
+    </ul>
+
+
 
 </body>
 </html>
