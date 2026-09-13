@@ -39,7 +39,7 @@
     <!--for create lists-->
     <div class='card'>
         <h3>Create New List</h3>
-        <form hx-post="{{ url_for('create_list') }}"
+        <form hx-post="/create_list"
               hx-target='#lists-container'
               hx-swap='beforeend'
               hx-on::after-request="this.reset()">
